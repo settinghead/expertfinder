@@ -9,6 +9,7 @@
 	<classpathentry kind="lib" path="lib/sax2.jar"/>
 	<classpathentry kind="lib" path="lib/thumbelina.jar"/>
 	<classpathentry kind="lib" path="pdfbox/PDFBox-0.7.3.jar"/>
+	<classpathentry kind="lib" path="yahoo_search-2.0.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/PDFBox"/>
 	<classpathentry kind="output" path=""/>
 </classpath>
