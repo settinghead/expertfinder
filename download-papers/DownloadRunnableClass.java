@@ -9,9 +9,9 @@ public class DownloadRunnableClass implements Runnable {
 	}
 
 	public void run() {
-//		FileDownload dl = new FileDownload();
-//		dl.download(url, location);
-		System.out.println(url);
-		//PDFParser.pdfToText(url, System.out);
+		//FileDownload dl = new FileDownload();
+		//dl.download(url, location);
+		//System.out.println(url);
+		PDFParser.pdfToText(url, System.out);
 	}
 }
