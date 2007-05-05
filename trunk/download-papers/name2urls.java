@@ -10,7 +10,7 @@ public class name2urls {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		getAddresses("charles dyer", 5, null, System.out);
+		getAddresses("jerry zhu", 5, null, System.out);
 	}
 	
 	public static void getAddresses(String name, int numResults, String withinURL, OutputStream out){

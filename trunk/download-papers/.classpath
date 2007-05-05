@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path=""/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/filterbuilder.jar"/>
-	<classpathentry kind="lib" path="lib/htmllexer.jar"/>
-	<classpathentry kind="lib" path="lib/htmlparser.jar"/>
-	<classpathentry kind="lib" path="lib/junit.jar"/>
-	<classpathentry kind="lib" path="lib/sax2.jar"/>
-	<classpathentry kind="lib" path="lib/thumbelina.jar"/>
-	<classpathentry kind="lib" path="pdfbox/PDFBox-0.7.3.jar"/>
-	<classpathentry kind="lib" path="yahoo_search-2.0.1.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/PDFBox"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="lib" path="lib/filterbuilder.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/htmllexer.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/htmlparser.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/junit.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/sax2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/thumbelina.jar"/>
+	<classpathentry exported="true" kind="lib" path="yahoo_search-2.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="pdfbox/PDFBox-0.7.3.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

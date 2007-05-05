@@ -16,7 +16,7 @@ import java.net.*;
 
 public class PaperCrawler {
 
-	static String currentSystemPath = ".\\";
+	static String currentSystemPath = "./";
 
 	static ArrayList<String> urlList = new ArrayList<String>();
 
