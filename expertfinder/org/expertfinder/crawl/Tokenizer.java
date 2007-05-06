@@ -1,4 +1,5 @@
 package org.expertfinder.crawl;
+
 import java.io.*;
 import java.util.Scanner;
 import java.util.regex.*;
@@ -30,7 +31,7 @@ public class Tokenizer {
 													input.substring(m.start(),
 															m.end()))
 											.replaceAll("");
-						if (!StopWord.isStopword(word)) {
+						if (!StopWord.isStopword(word.trim().toLowerCase())) {
 							writer.write(word.toLowerCase() + " ");
 							count++;
 						}

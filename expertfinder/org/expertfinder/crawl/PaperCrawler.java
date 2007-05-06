@@ -1,4 +1,5 @@
 package org.expertfinder.crawl;
+
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
@@ -14,6 +15,7 @@ import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import org.htmlparser.util.*;
 import java.net.*;
+import java.util.regex.*;
 
 public class PaperCrawler {
 
@@ -59,8 +61,10 @@ public class PaperCrawler {
 		try {
 			while (urlList.size() > 0) {
 				// check if the address has been visited
-				visitNode(getAllLinkNodes(urlList.remove(0)), startURL,
-						startURL, urlLevels.remove(0).intValue());
+				// visitNode(getAllLinkNodes(urlList.remove(0)), startURL,
+				// startURL, urlLevels.remove(0).intValue());
+				visitLink(getLinks(urlList.remove(0)), startURL, startURL,
+						urlLevels.remove(0).intValue());
 				debugPrintHistory();
 			}
 		} catch (Exception ex) {
@@ -70,43 +74,71 @@ public class PaperCrawler {
 		downloadQueue.putAnEnd();
 	}
 
-	static void visitNode(NodeList list, String startURL, String currentURL,
-			int level) {
-		Tag tag;
-		Node node;
-		SimpleNodeIterator iterator = list.elements();
-		while (iterator.hasMoreNodes()) {
-			node = iterator.nextNode();
-			if (node instanceof Tag) {
-				tag = (Tag) node;
-				// found a hyperlink
-				if (true
-				// tag.getTagName().toLowerCase().trim() == "a"
-				) {
-					String path = "";
+	// static void visitNode(NodeList list, String startURL, String currentURL,
+	// int level) {
+	// Tag tag;
+	// Node node;
+	// SimpleNodeIterator iterator = list.elements();
+	// while (iterator.hasMoreNodes()) {
+	// node = iterator.nextNode();
+	// if (node instanceof Tag) {
+	// tag = (Tag) node;
+	// // found a hyperlink
+	// if (true
+	// // tag.getTagName().toLowerCase().trim() == "a"
+	// ) {
+	// String path = "";
+	//
+	// URL current;
+	// try {
+	// current = new URL(new URL(getFilePath(currentURL)), tag
+	// .getAttribute("href"));
+	// path = removePositionTag(current.toURI().toString());
+	// } catch (URISyntaxException ex) {
+	// printException(ex);
+	// } catch (MalformedURLException ex) {
+	// printException(ex);
+	// }
+	// if (history.get(path.trim().toLowerCase()) == null) {
+	// if (isPdfURL(path)) {
+	// downloadURL(path);
+	// } else if (withinScope(startURL, getFilePath(path))
+	// && level < maxLevel) {
+	// urlList.add(path);
+	// urlLevels.add(new Integer(level + 1));
+	// }
+	// history.put(path.trim().toLowerCase(), new Integer(
+	// level + 1));
+	// }
+	// }
+	// }
+	// }
+	// }
 
-					URL current;
-					try {
-						current = new URL(new URL(getFilePath(currentURL)), tag
-								.getAttribute("href"));
-						path = removePositionTag(current.toURI().toString());
-					} catch (URISyntaxException ex) {
-						printException(ex);
-					} catch (MalformedURLException ex) {
-						printException(ex);
-					}
-					if (history.get(path.trim().toLowerCase()) == null) {
-						if (isPdfURL(path)) {
-							downloadURL(path);
-						} else if (withinScope(startURL, getFilePath(path))
-								&& level < maxLevel) {
-							urlList.add(path);
-							urlLevels.add(new Integer(level + 1));
-						}
-						history.put(path.trim().toLowerCase(), new Integer(
-								level + 1));
-					}
+	static void visitLink(String[] list, String startURL, String currentURL,
+			int level) {
+		for (int i = 0; i < list.length; i++) {
+
+			String path = "";
+
+			URL current;
+			try {
+				current = new URL(new URL(getFilePath(currentURL)), list[i]);
+				path = removePositionTag(current.toURI().toString());
+			} catch (URISyntaxException ex) {
+				printException(ex);
+			} catch (MalformedURLException ex) {
+				printException(ex);
+			}
+			if (history.get(path.trim().toLowerCase()) == null) {
+				if (isPdfURL(path)) {
+					downloadURL(path);
+				} else if (withinScope(startURL, getFilePath(path))
+						&& level < maxLevel) {
+					urlList.add(path);
+					urlLevels.add(new Integer(level + 1));
 				}
+				history.put(path.trim().toLowerCase(), new Integer(level + 1));
 			}
 		}
 	}
@@ -120,19 +152,35 @@ public class PaperCrawler {
 
 	}
 
-	static NodeList getAllLinkNodes(String url) {
+//	static NodeList getAllLinkNodes(String url) {
+//
+//		Parser parser;
+//		NodeFilter filter;
+//		NodeList list = null;
+//		filter = new NodeClassFilter(LinkTag.class);
+//		try {
+//			parser = Parser.createParser(
+//			// downloadHTML
+//					(url), null);
+//			list = parser.extractAllNodesThatMatch(filter);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return list;
+//	}
 
-		Parser parser;
-		NodeFilter filter;
-		NodeList list = null;
-		filter = new NodeClassFilter(LinkTag.class);
-		try {
-			parser = Parser.createParser(downloadHTML(url), null);
-			list = parser.extractAllNodesThatMatch(filter);
-		} catch (Exception e) {
-			e.printStackTrace();
+	static String[] getLinks(String url) {
+		ArrayList<String> list = new ArrayList();
+		String html = downloadHTML(url);
+
+		Pattern pattern = Pattern.compile("<[aA].+href=\"?(.+?)[\" ]");
+		Matcher matcher = pattern.matcher(html);
+		while (matcher.find()) {
+			list.add(matcher.group(1));
 		}
-		return list;
+
+		String[] dummy = new String[1];
+		return list.toArray(dummy);
 	}
 
 	static String downloadHTML(String urlAddress) {
