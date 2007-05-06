@@ -21,7 +21,7 @@ public class Tokenizer {
 					// truncate
 					word = nonAlnum.matcher(word).replaceAll("");
 					// handle line break
-					if (word.length() > 1 && word.length()<30) {
+					if (word.length() > 1 && word.length() < 25) {
 						if (word.charAt(word.length() - 1) == '-' && m.find())
 							word = word.substring(0, word.length() - 1)
 									+ nonAlnum
@@ -29,8 +29,10 @@ public class Tokenizer {
 													input.substring(m.start(),
 															m.end()))
 											.replaceAll("");
-						writer.write(word.toLowerCase() + " ");
-						count++;
+						if (!StopWord.isStopword(word)) {
+							writer.write(word.toLowerCase() + " ");
+							count++;
+						}
 
 						if (count >= 1000) {
 							writer.write("\r\n");
@@ -55,7 +57,7 @@ public class Tokenizer {
 			} catch (IOException ex) {
 				System.err.print(ex.getMessage());
 			}
-			//sc.close();
+			// sc.close();
 		} catch (Exception ex) {
 			System.err.println(ex.getMessage());
 		}
