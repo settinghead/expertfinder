@@ -29,11 +29,13 @@ public class PaperCrawler {
 
 	ArrayList<String> urlList = new ArrayList<String>();
 
+	ArrayList<String> referringURLPath = new ArrayList<String>();
+
 	ArrayList<Integer> urlLevels = new ArrayList<Integer>();
 
 	Hashtable<String, Integer> history = new Hashtable<String, Integer>();
 
-	DownloadWorkQueue downloadQueue = new DownloadWorkQueue(10, OUT);
+	DownloadWorkQueue downloadQueue = new DownloadWorkQueue(20, OUT);
 
 	int maxLevel = 2;
 
@@ -63,6 +65,7 @@ public class PaperCrawler {
 			// urlList.add(getWebPage((new BufferedReader(
 			// new InputStreamReader(System.in))).readLine()));
 			urlList.add(startURL);
+			referringURLPath.add(startURL);
 			urlLevels.add(new Integer(0));
 			history.put(startURL, new Integer(0));
 		} catch (Exception ex) {
@@ -73,8 +76,9 @@ public class PaperCrawler {
 				// check if the address has been visited
 				// visitNode(getAllLinkNodes(urlList.remove(0)), startURL,
 				// startURL, urlLevels.remove(0).intValue());
-				visitLink(getLinks(urlList.remove(0)), startURL, startURL,
-						urlLevels.remove(0).intValue());
+				visitLink(getLinks(urlList.remove(0)), startURL,
+						referringURLPath.remove(0), urlLevels.remove(0)
+								.intValue());
 				debugPrintHistory();
 			}
 		} catch (Exception ex) {
@@ -83,19 +87,19 @@ public class PaperCrawler {
 
 		downloadQueue.putAStop();
 
-		while (!downloadQueue.allThreadsStopped()) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException ex) {
-			}
-		}
-		;
-
-		try {
-			OUT.close();
-		} catch (IOException ex) {
-			printException(ex);
-		}
+//		while (!downloadQueue.allThreadsStopped()) {
+//			try {
+//				Thread.sleep(100);
+//			} catch (InterruptedException ex) {
+//			}
+//		}
+//		;
+//
+//		try {
+//			OUT.close();
+//		} catch (IOException ex) {
+//			printException(ex);
+//		}
 	}
 
 	// static void visitNode(NodeList list, String startURL, String currentURL,
@@ -139,18 +143,21 @@ public class PaperCrawler {
 	// }
 	// }
 
-	void visitLink(String[] list, String startURL, String currentURL, int level) {
+	void visitLink(String[] list, String startURL, String referringURL,
+			int level) {
 		for (int i = 0; i < list.length; i++) {
 
 			String path = "";
 
 			URL current;
 			try {
-				current = new URL(new URL(getFilePath(currentURL)), list[i]);
-				path = removePositionTag(current.toURI().toString());
-			} catch (URISyntaxException ex) {
-				printException(ex);
-			} catch (MalformedURLException ex) {
+				current = new URL(new URL(getFilePath(referringURL)), list[i]);
+				path = removePositionTag(current.toString());
+			}
+			// catch (URISyntaxException ex) {
+			// printException(ex);
+			// }
+			catch (MalformedURLException ex) {
 				printException(ex);
 			}
 			if (history.get(path.trim().toLowerCase()) == null) {
@@ -160,6 +167,7 @@ public class PaperCrawler {
 						&& level < maxLevel) {
 					urlList.add(path);
 					urlLevels.add(new Integer(level + 1));
+					referringURLPath.add(path);
 				}
 				history.put(path.trim().toLowerCase(), new Integer(level + 1));
 			}
@@ -193,10 +201,10 @@ public class PaperCrawler {
 	// }
 
 	String[] getLinks(String url) {
-		ArrayList<String> list = new ArrayList();
+		ArrayList<String> list = new ArrayList<String>();
 		String html = downloadHTML(url);
 
-		Pattern pattern = Pattern.compile("<[aA].+href=\"?(.+?)[\" >]");
+		Pattern pattern = Pattern.compile("<[aA].+[Hh][Rr][Ee][Ff]=\"?(.+?)[\" >]");
 		Matcher matcher = pattern.matcher(html);
 		while (matcher.find()) {
 			list.add(matcher.group(1));
@@ -258,8 +266,12 @@ public class PaperCrawler {
 		if (endWithForwardSlash(url))
 			return url;
 		// "http://abc.edu/hello/ac.pdf" -->"http://abc.edu/hello/"
-		else
-			return url.substring(0, url.lastIndexOf("/") + 1);
+		else {
+			if (FileDownload.checkIfURLExists(url + "/"))
+				return url + "/";
+			else
+				return url.substring(0, url.lastIndexOf("/") + 1);
+		}
 	}
 
 	boolean isPdfURL(String url) {
@@ -301,7 +313,8 @@ public class PaperCrawler {
 		// System.err.println("FileCopy: " + e);
 		// }
 
-		downloadQueue.addToQueue(urlAddress, currentSystemPath + fileName, this.OUT);
+		downloadQueue.addToQueue(urlAddress, currentSystemPath + fileName,
+				this.OUT);
 
 	}
 

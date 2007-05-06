@@ -1,9 +1,14 @@
 package org.expertfinder.crawl;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.OutputStream;
+import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 public class DownloadWorkQueue {
+
 	private final int nThreads;
 
 	private final PoolWorker[] threads;
@@ -12,8 +17,14 @@ public class DownloadWorkQueue {
 
 	OutputStream OUT = System.out;
 
-
 	public boolean allThreadsStopped() {
+		for (int i = 0; i < threads.length; i++)
+			if (threads[i].isAlive())
+				return false;
+		return true;
+	}
+
+	public boolean isAllThreadWorkFinished() {
 		for (int i = 0; i < threads.length; i++)
 			if (threads[i].isAlive())
 				return false;
@@ -40,7 +51,8 @@ public class DownloadWorkQueue {
 
 	public void addToQueue(String url, String location, OutputStream out) {
 		synchronized (queue) {
-			DownloadRunnableClass drc = new DownloadRunnableClass(url, location, out);
+			DownloadRunnableClass drc = new DownloadRunnableClass(url,
+					location, out);
 			queue.addLast(drc);
 			queue.notify();
 		}
@@ -50,35 +62,36 @@ public class DownloadWorkQueue {
 
 	public void putAStop() {
 		end = true;
+		// queue.notifyAll();
 	}
 
 	private class PoolWorker extends Thread {
-		
+
 		OutputStream OUT;
-		
+
 		public void run() {
-			Runnable r;
+			Runnable r = null;
 
 			while (true) {
 				synchronized (queue) {
 					if (queue.isEmpty() && end)
 						break;
-					while (queue.isEmpty()) {
-						if (end)
-							break;
+					while (queue.isEmpty() && !end) {
 						try {
-							queue.wait();
+							queue.wait(500);
 						} catch (InterruptedException ignored) {
 						}
 					}
-
-					r = queue.removeFirst();
+					if (!queue.isEmpty())
+						r = queue.removeFirst();
 				}
 
 				// If we don't catch RuntimeException,
 				// the pool could leak threads
 				try {
-					r.run();
+
+					if (r != null)
+						r.run();
 				} catch (RuntimeException e) {
 					// You might want to log something here
 					System.err.println(e.getMessage());

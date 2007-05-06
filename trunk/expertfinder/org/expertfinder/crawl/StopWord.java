@@ -22,6 +22,7 @@ public class StopWord {
 		}
 	}
 	
+	
 	public static boolean isStopword(String word)
 	{
 		if(dic.get(word)!=null) return true;
