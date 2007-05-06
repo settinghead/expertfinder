@@ -24,7 +24,7 @@ public class PaperCrawler {
 
 	static Hashtable<String, Integer> history = new Hashtable<String, Integer>();
 
-	static DownloadWorkQueue downloadQueue = new DownloadWorkQueue(5);
+	static DownloadWorkQueue downloadQueue = new DownloadWorkQueue(10);
 
 	static int maxLevel = 2;
 

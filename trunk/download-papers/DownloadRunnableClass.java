@@ -13,6 +13,12 @@ public class DownloadRunnableClass implements Runnable {
 //		dl.download(url, location);
 		//System.out.println(url);
 		PDFParser.pdfToText(url, System.out);
-
+//		try
+//		{
+//			ExtractText.extract(new String[]{url,"-console"}, System.out);
+//		}
+//		catch (Exception ex){
+//			System.err.println(ex.getMessage());
+//		}
 	}
 }
