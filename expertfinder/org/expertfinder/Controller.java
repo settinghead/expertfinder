@@ -9,23 +9,17 @@ public class Controller {
 
 	static String PROFILE_PATH = "./profiles/";
 
-	public static void main(String[] args) throws Exception{
-		build();
+	public static void main(String[] args) throws Exception {
+		// build();
 		query();
 	}
 
 	static void build() {
-		String[] names = new String[] {
-		 "Jerry Zhu",
-		 "Anhai Doan",
-		 "Charles Dyer",
-		 "David J. DeWitt",
-		//" Jude Shavlik",
-		 "Raghu Ramakrishnan",
-		 "Cristian Estan",
-		 "Susan B. Horwitz",
-		 "Somesh Jha"
-		};
+		String[] names = new String[] { "Jerry Zhu", "Anhai Doan",
+				"Charles Dyer", "David J. DeWitt",
+				// " Jude Shavlik",
+				"Raghu Ramakrishnan", "Cristian Estan", "Susan B. Horwitz",
+				"Somesh Jha" };
 		buildProfiles(names);
 	}
 
@@ -60,7 +54,8 @@ public class Controller {
 						ProfileBuilder.main(new String[] { rawFilePath,
 								profileFilePath });
 					}
-					mapWriter.write(profileFilePath + " " + names[i] + "\n");
+					mapWriter.write(profileFilePath + " "
+							+ names[i].replaceAll(" ", "_") + "\n");
 				} catch (FileNotFoundException ex) {
 					System.err.println(ex.getMessage());
 				}
