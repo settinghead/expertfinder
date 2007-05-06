@@ -64,6 +64,7 @@ public class DownloadWorkQueue {
 					r.run();
 				} catch (RuntimeException e) {
 					// You might want to log something here
+					System.err.println(e.getMessage());
 				}
 				
 			}

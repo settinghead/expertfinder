@@ -12,6 +12,15 @@
 	<classpathentry kind="lib" path="lib/sax2.jar"/>
 	<classpathentry kind="lib" path="lib/thumbelina.jar"/>
 	<classpathentry kind="lib" path="lib/yahoo_search-2.0.1.jar"/>
+	<classpathentry kind="lib" path="pdfbox/ant.jar"/>
+	<classpathentry kind="lib" path="pdfbox/bcmail-jdk14-132.jar"/>
+	<classpathentry kind="lib" path="pdfbox/bcprov-jdk14-132.jar"/>
+	<classpathentry kind="lib" path="pdfbox/checkstyle-all-4.2.jar"/>
+	<classpathentry kind="lib" path="pdfbox/FontBox-0.1.0-dev.jar"/>
+	<classpathentry kind="lib" path="pdfbox/junit.jar"/>
+	<classpathentry kind="lib" path="pdfbox/lucene-core-2.0.0.jar"/>
+	<classpathentry kind="lib" path="pdfbox/lucene-demos-2.0.0.jar"/>
+	<classpathentry kind="lib" path="pdfbox/PDFBox-0.7.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
