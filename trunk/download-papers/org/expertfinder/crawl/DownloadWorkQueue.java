@@ -1,3 +1,4 @@
+package org.expertfinder.crawl;
 import java.util.LinkedList;
 
 public class DownloadWorkQueue {

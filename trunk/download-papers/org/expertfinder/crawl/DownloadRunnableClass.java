@@ -1,3 +1,4 @@
+package org.expertfinder.crawl;
 public class DownloadRunnableClass implements Runnable {
 	String url;
 
