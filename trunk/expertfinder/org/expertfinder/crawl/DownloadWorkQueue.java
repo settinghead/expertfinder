@@ -1,4 +1,6 @@
 package org.expertfinder.crawl;
+
+import java.io.OutputStream;
 import java.util.LinkedList;
 
 public class DownloadWorkQueue {
@@ -8,7 +10,17 @@ public class DownloadWorkQueue {
 
 	private final LinkedList<Runnable> queue;
 
-	public DownloadWorkQueue(int nThreads) {
+	OutputStream OUT = System.out;
+
+
+	public boolean allThreadsStopped() {
+		for (int i = 0; i < threads.length; i++)
+			if (threads[i].isAlive())
+				return false;
+		return true;
+	}
+
+	public DownloadWorkQueue(int nThreads, OutputStream out) {
 		this.nThreads = nThreads;
 		queue = new LinkedList<Runnable>();
 		threads = new PoolWorker[nThreads];
@@ -26,9 +38,9 @@ public class DownloadWorkQueue {
 		}
 	}
 
-	public void addToQueue(String url, String location) {
+	public void addToQueue(String url, String location, OutputStream out) {
 		synchronized (queue) {
-			DownloadRunnableClass drc = new DownloadRunnableClass(url, location);
+			DownloadRunnableClass drc = new DownloadRunnableClass(url, location, out);
 			queue.addLast(drc);
 			queue.notify();
 		}
@@ -36,11 +48,14 @@ public class DownloadWorkQueue {
 
 	boolean end = false;
 
-	public void putAnEnd() {
+	public void putAStop() {
 		end = true;
 	}
 
 	private class PoolWorker extends Thread {
+		
+		OutputStream OUT;
+		
 		public void run() {
 			Runnable r;
 
@@ -49,7 +64,8 @@ public class DownloadWorkQueue {
 					if (queue.isEmpty() && end)
 						break;
 					while (queue.isEmpty()) {
-						if(end) break;
+						if (end)
+							break;
 						try {
 							queue.wait();
 						} catch (InterruptedException ignored) {
@@ -67,7 +83,7 @@ public class DownloadWorkQueue {
 					// You might want to log something here
 					System.err.println(e.getMessage());
 				}
-				
+
 			}
 		}
 	}

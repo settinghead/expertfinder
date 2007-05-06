@@ -3,23 +3,28 @@ import com.yahoo.search.*;
 
 import java.io.*;
 
+import java.util.*;
 
-public class name2urls {
+public class NameToURL {
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		getAddresses("jerry zhu", 5, null, System.out);
+		String[] addresses = getAddresses("jerry zhu", 5, null);
+		for(int i=0;i<addresses.length;i++)
+			System.out.println(addresses[i]);
 	}
 	
-	public static void getAddresses(String name, int numResults, String withinURL, OutputStream out){
+	public static String[] getAddresses(String name, int numResults, String withinURL){
 		String query = "";
 		if(withinURL!=null&&withinURL.length()>0)
 			query+="inurl:" + withinURL + " ";
 		
 		query+=name;
+		
+		ArrayList<String> arrayList = new ArrayList<String>();
 		
         SearchClient client = new SearchClient("OzomwBrV34GSUD6G3vWHVV43nlVF.srrxIT88JqkrDhrTPAqLMhNBwZa6TT.8WuJmCU-");
 
@@ -32,16 +37,13 @@ public class name2urls {
             // Execute the search.
             WebSearchResults results = client.webSearch(request);
 
-            OutputStreamWriter sw = new OutputStreamWriter(out);
             // Iterate over the results.
             for (int i = 0; i < results.listResults().length; i++) {
                 WebSearchResult result = results.listResults()[i];
 
                 // Print out the document title and URL.
-                sw.write(result.getUrl()+"\n");
+             arrayList.add(result.getUrl());
             }
-            sw.flush();
-            sw.close();
         }
         catch (IOException e) {
             // Most likely a network exception of some sort.
@@ -55,6 +57,8 @@ public class name2urls {
                     e.toString());
             e.printStackTrace(System.err);
         }
+        String[] dummy = new String[0];
+        return arrayList.toArray(dummy);
 	}
 	
 }
