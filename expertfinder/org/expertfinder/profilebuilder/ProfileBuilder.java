@@ -9,7 +9,7 @@ package org.expertfinder.profilebuilder;
 
 import java.util.*;
 import java.io.*;
-public class build_profile {
+public class ProfileBuilder {
 	
 	public static final boolean DEBUG = true;
 	
@@ -17,8 +17,8 @@ public class build_profile {
 		
 		// check if input correct
 		if (args.length < 2) {
-			System.out.println("Too few arguemtns.");
-			System.out.println("Usage: build_profile file_1 file_2 ... file_N output_file");
+			System.err.println("Too few arguemtns.");
+			System.err.println("Usage: build_profile file_1 file_2 ... file_N output_file");
 			System.exit(1);
 		}
 		
@@ -31,6 +31,7 @@ public class build_profile {
 	// take a string array containing file names (with appropriate direcotries)
 	// generate a bag-of-word representation from all of them (except last)
 	// Eventually write them to the file contained in the last element of the array
+	
 	private static void generateWrite(String[] data) {
 		
 		// a hashtable indexed by word storing the count of each word
@@ -42,7 +43,7 @@ public class build_profile {
 				Scanner inp = new Scanner(new FileInputStream(new File(data[i])));
 				while (inp.hasNext()) {
 					String word = inp.next();
-					System.out.println(word);
+					//System.out.println(word);
 					// if the word is already in the hashtable
 					if (myTable.containsKey(word)) {
 						int num = myTable.get(word);
@@ -58,7 +59,7 @@ public class build_profile {
 			}
 			
 			catch (FileNotFoundException e) {
-				System.out.println("File " + data[i] + " was not found! Omitting.");
+				System.err.println("File " + data[i] + " was not found! Omitting.");
 			}
 		}
 			

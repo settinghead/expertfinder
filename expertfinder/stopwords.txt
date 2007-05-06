@@ -1139,3 +1139,10 @@ yourselves
 z
 
 zero
+
+phone
+
+fax
+
+university
+

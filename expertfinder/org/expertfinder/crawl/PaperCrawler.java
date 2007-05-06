@@ -6,37 +6,38 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import org.htmlparser.*;
-import org.htmlparser.NodeFilter;
-import org.htmlparser.Parser;
 import org.htmlparser.filters.AndFilter;
 import org.htmlparser.filters.NodeClassFilter;
 import org.htmlparser.tags.*;
-import org.htmlparser.util.NodeList;
-import org.htmlparser.util.ParserException;
 import org.htmlparser.util.*;
 import java.net.*;
 import java.util.regex.*;
 
 public class PaperCrawler {
 
-	static String currentSystemPath = "./";
+	OutputStream OUT = System.out;
 
-	static ArrayList<String> urlList = new ArrayList<String>();
+	public OutputStream getOutputStream() {
+		return OUT;
+	}
 
-	static ArrayList<Integer> urlLevels = new ArrayList<Integer>();
+	public void setOutputStream(OutputStream out) {
+		this.OUT = out;
+	}
 
-	static Hashtable<String, Integer> history = new Hashtable<String, Integer>();
+	String currentSystemPath = "./";
 
-	static DownloadWorkQueue downloadQueue = new DownloadWorkQueue(10);
+	ArrayList<String> urlList = new ArrayList<String>();
 
-	static int maxLevel = 2;
+	ArrayList<Integer> urlLevels = new ArrayList<Integer>();
+
+	Hashtable<String, Integer> history = new Hashtable<String, Integer>();
+
+	DownloadWorkQueue downloadQueue = new DownloadWorkQueue(10, OUT);
+
+	int maxLevel = 2;
 
 	public static void main(String args[]) {
-
-		// TODO: remove these after debugging
-		ArrayList<String> urlList = PaperCrawler.urlList;
-		ArrayList<Integer> urlLevels = PaperCrawler.urlLevels;
-		Hashtable<String, Integer> history = PaperCrawler.history;
 		// TODO:resolve parameters
 		for (int i = 0; i < args.length; i++) {
 			switch (args[i].charAt(0)) {
@@ -47,7 +48,16 @@ public class PaperCrawler {
 				break;
 			}
 		}
-		String startURL = args[0];
+		PaperCrawler pw = new PaperCrawler();
+		pw.crawl(args[0]);
+	}
+
+	public void crawl(String startURL) {
+
+		// TODO: remove these after debugging
+		ArrayList<String> urlList = this.urlList;
+		ArrayList<Integer> urlLevels = this.urlLevels;
+		Hashtable<String, Integer> history = this.history;
 		try {
 			// add the starting URL
 			// urlList.add(getWebPage((new BufferedReader(
@@ -71,7 +81,21 @@ public class PaperCrawler {
 			printException(ex);
 		}
 
-		downloadQueue.putAnEnd();
+		downloadQueue.putAStop();
+
+		while (!downloadQueue.allThreadsStopped()) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException ex) {
+			}
+		}
+		;
+
+		try {
+			OUT.close();
+		} catch (IOException ex) {
+			printException(ex);
+		}
 	}
 
 	// static void visitNode(NodeList list, String startURL, String currentURL,
@@ -115,8 +139,7 @@ public class PaperCrawler {
 	// }
 	// }
 
-	static void visitLink(String[] list, String startURL, String currentURL,
-			int level) {
+	void visitLink(String[] list, String startURL, String currentURL, int level) {
 		for (int i = 0; i < list.length; i++) {
 
 			String path = "";
@@ -143,7 +166,7 @@ public class PaperCrawler {
 		}
 	}
 
-	static String removePositionTag(String path) {
+	String removePositionTag(String path) {
 		int pos = path.indexOf('#');
 		if (pos > 0)
 			return path.substring(0, pos);
@@ -152,38 +175,38 @@ public class PaperCrawler {
 
 	}
 
-//	static NodeList getAllLinkNodes(String url) {
-//
-//		Parser parser;
-//		NodeFilter filter;
-//		NodeList list = null;
-//		filter = new NodeClassFilter(LinkTag.class);
-//		try {
-//			parser = Parser.createParser(
-//			// downloadHTML
-//					(url), null);
-//			list = parser.extractAllNodesThatMatch(filter);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return list;
-//	}
+	// static NodeList getAllLinkNodes(String url) {
+	//
+	// Parser parser;
+	// NodeFilter filter;
+	// NodeList list = null;
+	// filter = new NodeClassFilter(LinkTag.class);
+	// try {
+	// parser = Parser.createParser(
+	// // downloadHTML
+	// (url), null);
+	// list = parser.extractAllNodesThatMatch(filter);
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// return list;
+	// }
 
-	static String[] getLinks(String url) {
+	String[] getLinks(String url) {
 		ArrayList<String> list = new ArrayList();
 		String html = downloadHTML(url);
 
-		Pattern pattern = Pattern.compile("<[aA].+href=\"?(.+?)[\" ]");
+		Pattern pattern = Pattern.compile("<[aA].+href=\"?(.+?)[\" >]");
 		Matcher matcher = pattern.matcher(html);
 		while (matcher.find()) {
 			list.add(matcher.group(1));
 		}
 
-		String[] dummy = new String[1];
+		String[] dummy = new String[0];
 		return list.toArray(dummy);
 	}
 
-	static String downloadHTML(String urlAddress) {
+	String downloadHTML(String urlAddress) {
 		try {
 			return FileDownload.downloadText(urlAddress, 512000);
 		} catch (Exception ex) {
@@ -191,7 +214,7 @@ public class PaperCrawler {
 		}
 	}
 
-	static boolean endWithForwardSlash(String url) {
+	boolean endWithForwardSlash(String url) {
 		if (url == null || url.length() == 0)
 			return false;
 		try {
@@ -205,7 +228,7 @@ public class PaperCrawler {
 		}
 	}
 
-	static boolean withinScope(String startURL, String currentURL) {
+	boolean withinScope(String startURL, String currentURL) {
 		try {
 			// remove the ending '/'
 			if (endWithForwardSlash(startURL))
@@ -224,13 +247,13 @@ public class PaperCrawler {
 		}
 	}
 
-	static void printException(Exception ex) {
+	void printException(Exception ex) {
 		// System.err.println(ex.getMessage());
 		// System.err.println(ex.getStackTrace());
 		// System.err.println(ex.getCause());
 	}
 
-	static String getFilePath(String url) {
+	String getFilePath(String url) {
 		// "http://abc.edu/hello/"
 		if (endWithForwardSlash(url))
 			return url;
@@ -239,7 +262,7 @@ public class PaperCrawler {
 			return url.substring(0, url.lastIndexOf("/") + 1);
 	}
 
-	static boolean isPdfURL(String url) {
+	boolean isPdfURL(String url) {
 		try {
 			url = url.trim().toLowerCase();
 			String suffix = url.substring(url.length() - 4, url.length());
@@ -253,7 +276,7 @@ public class PaperCrawler {
 		}
 	}
 
-	static void downloadURL(String urlAddress) {
+	void downloadURL(String urlAddress) {
 		String fileName = urlAddress.replace('/', '_').replace('\\', '_')
 				.replace('?', '_').replace(':', '_');
 		// try {
@@ -278,18 +301,18 @@ public class PaperCrawler {
 		// System.err.println("FileCopy: " + e);
 		// }
 
-		downloadQueue.addToQueue(urlAddress, currentSystemPath + fileName);
+		downloadQueue.addToQueue(urlAddress, currentSystemPath + fileName, this.OUT);
 
 	}
 
-	static void debugPrintHistory() {
+	void debugPrintHistory() {
 		// Object[] keys = history.keySet().toArray();
 		// for (int i = 0; i < urlList.size(); i++)
 		// System.out.println(urlList.indexOf(i))
 		// ;
 	}
 
-	static String getWebPage(String pageURL) {
+	String getWebPage(String pageURL) {
 		String str = "";
 		try {
 			URL url = new URL(pageURL);
