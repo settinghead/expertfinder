@@ -16,7 +16,8 @@ import java.util.regex.*;
 public class PaperCrawler {
 
 	OutputStream OUT = System.out;
-
+	static final boolean INCLUDE_HTML_FILES = true;
+	
 	public OutputStream getOutputStream() {
 		return OUT;
 	}
@@ -37,7 +38,7 @@ public class PaperCrawler {
 
 	DownloadWorkQueue downloadQueue = new DownloadWorkQueue(20, OUT);
 
-	int maxLevel = 2;
+	int maxLevel = 3;
 
 	public static void main(String args[]) {
 		// TODO:resolve parameters
@@ -168,7 +169,10 @@ public class PaperCrawler {
 					urlList.add(path);
 					urlLevels.add(new Integer(level + 1));
 					referringURLPath.add(path);
+					
+					if(INCLUDE_HTML_FILES) downloadURL(path);
 				}
+				System.err.println(path + " added.");
 				history.put(path.trim().toLowerCase(), new Integer(level + 1));
 			}
 		}
@@ -255,7 +259,7 @@ public class PaperCrawler {
 		}
 	}
 
-	void printException(Exception ex) {
+	static void printException(Exception ex) {
 		// System.err.println(ex.getMessage());
 		// System.err.println(ex.getStackTrace());
 		// System.err.println(ex.getCause());
@@ -274,7 +278,7 @@ public class PaperCrawler {
 		}
 	}
 
-	boolean isPdfURL(String url) {
+	public static boolean isPdfURL(String url) {
 		try {
 			url = url.trim().toLowerCase();
 			String suffix = url.substring(url.length() - 4, url.length());

@@ -8,6 +8,10 @@ public class DownloadRunnableClass implements Runnable {
 
 	static Hashtable<String, Integer> restrictedURLs = new Hashtable<String, Integer>();
 
+	static int denyCount = 0;
+
+	static final int MAX_DENYCOUNT = 999;
+
 	static {
 
 		try {
@@ -27,46 +31,49 @@ public class DownloadRunnableClass implements Runnable {
 		}
 	}
 
-	public synchronized static boolean getAddressPass(String address) {
+	public static boolean getAddressPass(String address) {
 		boolean result = true;
-		synchronized (restrictedURLs) {
+		{
 			for (int i = 0; i < address.length(); i++) {
 				Integer count = null;
 				if ((count = restrictedURLs.get(address.substring(0, i + 1))) != null) {
 					// if there are still slots
 					if (count.intValue() > 0) {
-						restrictedURLs.remove(address.substring(0, i + 1));
-						restrictedURLs.put(address.substring(0, i + 1),
-								new Integer(count - 1));
+						synchronized (restrictedURLs) {
+							restrictedURLs.remove(address.substring(0, i + 1));
+							restrictedURLs.put(address.substring(0, i + 1),
+									new Integer(count - 1));
+							restrictedURLs.notifyAll();
+						}
 						break;
 					}
 					// no more free slots available
 					else {
-						result = false;
+						if (++denyCount >= MAX_DENYCOUNT) {
+							result = true;
+							denyCount = 0;
+						} else
+							result = false;
 					}
 
 				}
 			}
-			restrictedURLs.notifyAll();
 			return result;
 		}
 	}
 
-	public synchronized static void releaseAddressPass(String address) {
-		synchronized (restrictedURLs) {
-			for (int i = 0; i < address.length(); i++) {
-				Integer count = null;
-				if ((count = restrictedURLs.get(address.substring(0, i + 1))) != null) {
-					{
-						restrictedURLs.remove(address.substring(0, i + 1));
-						restrictedURLs.put(address.substring(0, i + 1),
-								new Integer(count + 1));
-						break;
-					}
+	public static void releaseAddressPass(String address) {
+		for (int i = 0; i < address.length(); i++) {
+			Integer count = null;
+			if ((count = restrictedURLs.get(address.substring(0, i + 1))) != null) {
+				synchronized (restrictedURLs) {
+					restrictedURLs.remove(address.substring(0, i + 1));
+					restrictedURLs.put(address.substring(0, i + 1),
+							new Integer(count + 1));
+					restrictedURLs.notifyAll();
 				}
+				break;
 			}
-			restrictedURLs.notifyAll();
-			return;
 		}
 	}
 
@@ -96,7 +103,15 @@ public class DownloadRunnableClass implements Runnable {
 		// System.out.println(url);
 		while (!getAddressPass(url))
 			;
-		PDFParser.pdfToText(url, OUT);
+		
+		
+		if(PaperCrawler.isPdfURL(url))
+			//PDFParser.pdfToTextWithExternalUtility(url,OUT);
+			PDFParser.pdfToText(url, OUT);
+		else
+			//html file
+			Tokenizer.tokenize(HTML2Text.htmlToText(FileDownload.downloadText(url, 500000)), OUT);
+		
 		releaseAddressPass(url);
 		// try
 		// {

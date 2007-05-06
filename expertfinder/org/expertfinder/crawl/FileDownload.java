@@ -28,7 +28,7 @@ public class FileDownload {
 				out.write(buffer, 0, numRead);
 				numWritten += numRead;
 			}
-			System.out.println(localFileName + "\t" + numWritten);
+			//System.out.println(localFileName + "\t" + numWritten);
 		} catch (Exception exception) {
 			exception.printStackTrace();
 
@@ -69,6 +69,28 @@ public class FileDownload {
 		return result;
 	}
 
+	public static boolean checkIfURLOversized(String urlAddress, int maxSize) {
+		while (!DownloadRunnableClass.getAddressPass(urlAddress))
+			;
+		
+		boolean result;
+		
+		try {
+			URL url = new URL(urlAddress);
+			int len = url.openConnection().getContentLength();
+			if (len > maxSize)
+				result= true;
+			else
+				result=false;
+
+		} catch (MalformedURLException ex) {
+			result= false;
+		} catch (IOException ex) {
+			result= false;
+		}
+		DownloadRunnableClass.releaseAddressPass(urlAddress);
+		return result;
+	}
 	public static String downloadText(String address, int sizeLimit) {
 		while (!DownloadRunnableClass.getAddressPass(address))
 			;

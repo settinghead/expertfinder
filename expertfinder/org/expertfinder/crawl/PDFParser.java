@@ -1,8 +1,9 @@
 package org.expertfinder.crawl;
+
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-
+import java.util.Scanner;
 import org.pdfbox.pdmodel.PDDocument;
 import org.pdfbox.util.PDFTextStripper;
 
@@ -16,18 +17,43 @@ import org.pdfbox.util.PDFTextStripper;
 //import java.util.List;
 
 public class PDFParser {
+	public static void pdfToTextWithExternalUtility(String url,
+			OutputStream stream) {
+		(new File("./tmp")).mkdir();
+		FileDownload.download(url, "./tmp/tmp.pdf");
+		try {
+			Runtime.getRuntime().exec(
+					"pdftotext " + "./tmp/tmp.pdf ./tmp/tmp.txt");
+		} catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
+		StringWriter writer = null;
+		try {
+			writer = new StringWriter();
+			Scanner sc = new Scanner(new FileInputStream("./tmp/tmp.txt"));
+			while (sc.hasNextLine())
+				writer.write(sc.nextLine());
+			writer.flush();
+			Tokenizer.tokenize(writer.getBuffer().toString(), stream);
+		} catch (FileNotFoundException ex) {
+			System.err.println(ex.getMessage());
+		}
+	}
+
 	public static void pdfToText(String url, OutputStream stream) {
 		PDDocument document = null;
 		StringWriter writer = null;
 		try {
-			document = PDDocument.load(new URL(url));
-			PDFTextStripper stripper = new PDFTextStripper();
-			writer = new StringWriter();
-			//writer.append(url + "\r\n");
-			stripper.writeText(document, writer);
-			writer.flush();
-			//System.out.print(writer.toString());
-			Tokenizer.tokenize(writer.getBuffer().toString(), stream);
+			if (!FileDownload.checkIfURLOversized(url, 1024 * 1024 * 5)) {
+				document = PDDocument.load(new URL(url));
+				PDFTextStripper stripper = new PDFTextStripper();
+				writer = new StringWriter();
+				// writer.append(url + "\r\n");
+				stripper.writeText(document, writer);
+				writer.flush();
+				// System.out.print(writer.toString());
+				Tokenizer.tokenize(writer.getBuffer().toString(), stream);
+			}
 		} catch (Exception ex) {
 			System.err.println(ex.getMessage());
 		} finally {
@@ -36,7 +62,7 @@ public class PDFParser {
 					document.close();
 				} catch (IOException ex) {
 				}
-				if (url != null)
+
 			if (writer != null)
 				try {
 					writer.close();

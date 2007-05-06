@@ -23,7 +23,7 @@ public class Tokenizer {
 					// truncate
 					word = nonAlnum.matcher(word).replaceAll("");
 					// handle line break
-					if (word.length() > 1 && word.length() < 25) {
+					if (word.length() > 2 && word.length() < 25) {
 						if (word.charAt(word.length() - 1) == '-' && m.find())
 							word = word.substring(0, word.length() - 1)
 									+ nonAlnum

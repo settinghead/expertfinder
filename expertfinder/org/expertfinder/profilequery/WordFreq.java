@@ -24,13 +24,17 @@ public class WordFreq {
 		}
 		s.close();
 		
-		System.out.println(docNum);
+		FileWriter writer = new FileWriter(new File(args[1]));
+		
+		writer.write(docNum);
 		
 		for (Enumeration e = count.keys(); e.hasMoreElements(); ) {
 			String token = (String)e.nextElement();
 			int value = ((Int)count.get(token)).value;
-			System.out.println(token + " " + value);
+			writer.write(token + " " + value);
 		}
+		writer.flush();
+		writer.close();
 	}
 }
 
