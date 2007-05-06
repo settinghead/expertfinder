@@ -28,14 +28,15 @@ public class PDFParser {
 			writer.flush();
 			//System.out.print(writer.toString());
 			Tokenizer.tokenize(writer.getBuffer().toString(), stream);
-		} catch (IOException ex) {
-			//System.err.println(ex.getMessage());
+		} catch (Exception ex) {
+			System.err.println(ex.getMessage());
 		} finally {
 			if (document != null)
 				try {
 					document.close();
 				} catch (IOException ex) {
 				}
+				if (url != null)
 			if (writer != null)
 				try {
 					writer.close();

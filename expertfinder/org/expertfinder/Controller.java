@@ -10,8 +10,12 @@ public class Controller {
 	static String PROFILE_PATH = "./profiles/";
 
 	public static void main(String[] args) {
-		String[] names = new String[] { "Jerry Zhu", "Anhai Doan",
-				"Charles Dyer", "David J. DeWitt", " Jude Shavlik" };
+		String[] names = new String[] {
+//				"Jerry Zhu",
+//				"Anhai Doan", 
+				"Charles Dyer", 
+				"David J. DeWitt",
+				" Jude Shavlik" };
 		buildProfiles(names);
 	}
 
@@ -25,13 +29,11 @@ public class Controller {
 				String profileFilePath = PROFILE_PATH + "profile_"
 						+ rawFileName + ".txt";
 
-
-
 				FileOutputStream out = new FileOutputStream(new File(
 						rawFilePath), false);
 				PaperCrawler crawler = new PaperCrawler();
 				(crawler).setOutputStream(out);
-				
+
 				String[] addresses = NameToURL.getAddresses(names[i], 1, null);
 				if (addresses.length > 0) {
 					String address = addresses[0];
