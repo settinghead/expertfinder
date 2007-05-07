@@ -10,13 +10,17 @@ public class Controller {
 	static String PROFILE_PATH = "./profiles/";
 
 	public static void main(String[] args) throws Exception {
-		// build();
+		build();
 		query();
 	}
 
 	static void build() {
-		String[] names = new String[] { "Jerry Zhu", "Anhai Doan",
-				"Charles Dyer", "David J. DeWitt",
+		String[] names = new String[] { "Dieter van Melkebeek",
+				"Robert R. Meyer", "Jerry Zhu", "Anhai Doan", "Charles Dyer",
+				"David J. DeWitt", "Barton P. Miller", "Amos Ron",
+				"Karthikeyan Sankaralingam", "Marvin Solomon",
+				"Mary K. Vernon", "Michael M. Swift", "Gurindar S. Sohi",
+				"David A. Wood", "Stephen J. Wright",
 				// " Jude Shavlik",
 				"Raghu Ramakrishnan", "Cristian Estan", "Susan B. Horwitz",
 				"Somesh Jha" };
