@@ -15,7 +15,7 @@ public class App {
 	public static void main(String[] args) throws Exception {
 		mapTable = new Hashtable();
 		idfTable = new Hashtable();
-		numResearchers = 4;
+		//numResearchers = 4;
 		simValues = new Sim[numResearchers];
 		mapNameDir(args[0]);
 		idf(args[1]);
@@ -32,7 +32,8 @@ public class App {
 			simValues[count++] = new Sim(name, sim);
 		}
 		s.close();
-
+		if (count < numResearchers)
+            numResearchers = count;
 		// sort
 		Heapsort.sort(simValues, numResearchers);
 
@@ -66,7 +67,9 @@ public class App {
 
 	public static void idf(String fileName) throws Exception {
 		Scanner s = new Scanner(new File(fileName));
-		double N = Double.parseDouble(s.nextLine().trim());
+		numResearchers = Integer.parseInt(s.nextLine().trim());
+        double N = numResearchers;
+		
 		while (s.hasNextLine()) {
 			String line;
 			do {
