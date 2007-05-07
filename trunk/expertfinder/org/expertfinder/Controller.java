@@ -10,7 +10,7 @@ public class Controller {
 	static String PROFILE_PATH = "./profiles/";
 
 	public static void main(String[] args) throws Exception {
-		build();
+		//build();
 		query();
 	}
 
