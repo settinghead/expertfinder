@@ -1,0 +1,10 @@
+./profiles/profile_AnhaiDoan.txt AnhaiDoan
+./profiles/profile_CharlesDyer.txt CharlesDyer
+./profiles/profile_CristianEstan.txt CristianEstan
+./profiles/profile_DavidJ.DeWitt.txt DavidJ.DeWitt
+./profiles/profile_DietervanMelkebeek.txt DietervanMelkebeek
+./profiles/profile_JerryZhu.txt JerryZhu
+./profiles/profile_RaghuRamakrishnan.txt RaghuRamakrishnan
+./profiles/profile_RobertR.Meyer.txt RobertR.Meyer
+./profiles/profile_SomeshJha.txt SomeshJha
+./profiles/profile_SusanB.Horwitz.txt SusanB.Horwitz.txt
