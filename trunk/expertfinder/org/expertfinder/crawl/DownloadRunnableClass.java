@@ -4,6 +4,11 @@ import java.io.*;
 import java.util.Hashtable;
 import java.util.Scanner;
 
+import org.expertfinder.crawler.conversion.HTML2Text;
+import org.expertfinder.crawler.conversion.PDFParser;
+import org.expertfinder.tokenization.Tokenizer;
+import org.expertfinder.crawler.conversion.*;
+
 public class DownloadRunnableClass implements Runnable {
 
 	static Hashtable<String, Integer> restrictedURLs = new Hashtable<String, Integer>();
