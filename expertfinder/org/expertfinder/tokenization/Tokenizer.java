@@ -1,4 +1,4 @@
-package org.expertfinder.crawl;
+package org.expertfinder.tokenization;
 
 import java.io.*;
 import java.util.Scanner;

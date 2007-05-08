@@ -3,14 +3,15 @@ package org.expertfinder;
 import java.io.*;
 import org.expertfinder.crawl.*;
 import org.expertfinder.profilebuilder.*;
-import org.expertfinder.profilequery.*;
+import org.expertfinder.query.*;
 
 public class Controller {
 
 	static String PROFILE_PATH = "./profiles/";
 
 	public static void main(String[] args) throws Exception {
-		//build();
+		// build();
+		//buildIdf();
 		query();
 	}
 
@@ -28,7 +29,7 @@ public class Controller {
 	}
 
 	static void query() throws Exception {
-		queryResult("database management system", null, null);
+		queryResult("operating system kernel", null, null);
 	}
 
 	public static void buildProfiles(String[] names) {
@@ -70,6 +71,12 @@ public class Controller {
 		}
 	}
 
+	static void buildIdf() throws Exception {
+		String mapFile = PROFILE_PATH + "map.txt";
+		String idfFile = PROFILE_PATH + "query/idf.txt";
+		WordFreq.main(new String[] { mapFile, idfFile });
+	}
+
 	public static void queryResult(String query, String[] nameResult,
 			double[] rankValueResult) throws Exception {
 		(new File(PROFILE_PATH + "query")).mkdir();
@@ -77,14 +84,15 @@ public class Controller {
 		String mapFile = PROFILE_PATH + "map.txt";
 		String idfFile = PROFILE_PATH + "query/idf.txt";
 		String queryFile = PROFILE_PATH + "query/query.txt";
+		String queryProfileFile = PROFILE_PATH + "query/profile_query.txt";
 
-		WordFreq.main(new String[] { mapFile, idfFile });
+		ProfileBuilder.main(new String[] { queryFile, queryProfileFile });
 
 		FileWriter writer;
 		(writer = new FileWriter(new File(queryFile))).write(query);
 		writer.close();
 
-		App.main(new String[] { mapFile, idfFile, queryFile });
+		App.main(new String[] { mapFile, idfFile, queryProfileFile });
 
 	}
 }

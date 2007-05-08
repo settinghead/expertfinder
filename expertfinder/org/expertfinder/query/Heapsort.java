@@ -1,4 +1,4 @@
-package org.expertfinder.profilequery;
+package org.expertfinder.query;
 import java.util.*;
 
 public class Heapsort 
