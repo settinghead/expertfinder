@@ -82,43 +82,43 @@ public class DownloadRunnableClass implements Runnable {
 		}
 	}
 
-	private OutputStream OUT = System.out;
+	private Writer WRITER = new OutputStreamWriter(System.out);
 
-	public void setOutputStream(OutputStream out) {
-		OUT = out;
+	public void setWriter(Writer writer) {
+		WRITER = writer;
 	}
 
-	public OutputStream getOutputStream() {
-		return OUT;
+	public Writer getWriter() {
+		return WRITER;
 	}
 
 	String url;
 
 	String location;
 
-	public DownloadRunnableClass(String url, String location, OutputStream out) {
+	public DownloadRunnableClass(String url, String location, Writer writer) {
 		this.url = url;
 		this.location = location;
-		this.OUT = out;
+		this.WRITER = writer;
 	}
 
 	public void run() {
 		// FileDownload dl = new FileDownload();
 		// dl.download(url, location);
 		// System.out.println(url);
-		
-		//get slot for downloading from the server 
+
+		// get slot for downloading from the server
 		while (!getAddressPass(url))
 			;
-		
-		
-		if(PaperCrawler.isPdfURL(url))
-			//PDFParser.pdfToTextWithExternalUtility(url,OUT);
-			PDFParser.pdfToText(url, OUT);
+
+		if (PaperCrawler.isPdfURL(url))
+			// PDFParser.pdfToTextWithExternalUtility(url,OUT);
+			PDFParser.pdfToTokenizedText(url, PDFParser.SourceType.WebAddress, WRITER);
 		else
-			//html file
-			Tokenizer.tokenize(HTML2Text.htmlToText(FileDownload.downloadText(url, 500000)), OUT);
-		
+			// html file
+			Tokenizer.tokenize(HTML2Text.htmlToText(FileDownload.downloadText(
+					url, 500000)), WRITER);
+
 		releaseAddressPass(url);
 		// try
 		// {

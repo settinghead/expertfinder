@@ -15,15 +15,22 @@ import java.util.regex.*;
 
 public class PaperCrawler {
 
-	OutputStream OUT = System.out;
-	static final boolean INCLUDE_HTML_FILES = true;
+	Writer WRITER = new OutputStreamWriter(System.out);
+
+	public boolean INCLUDE_HTML_FILES = true;
+
+	public int MAX_LEVEL = 3;
+
+	public int NUMBER_OF_THREADS = 10;
+
+	public boolean DEBUG_INFO = true;
 	
-	public OutputStream getOutputStream() {
-		return OUT;
+	public Writer getWriter() {
+		return WRITER;
 	}
 
-	public void setOutputStream(OutputStream out) {
-		this.OUT = out;
+	public void setWriter(Writer writer) {
+		this.WRITER = writer;
 	}
 
 	String currentSystemPath = "./";
@@ -36,9 +43,8 @@ public class PaperCrawler {
 
 	Hashtable<String, Integer> history = new Hashtable<String, Integer>();
 
-	DownloadWorkQueue downloadQueue = new DownloadWorkQueue(20, OUT);
-
-	int maxLevel = 3;
+	DownloadWorkQueue downloadQueue = new DownloadWorkQueue(NUMBER_OF_THREADS,
+			WRITER);
 
 	public static void main(String args[]) {
 		// TODO:resolve parameters
@@ -88,19 +94,19 @@ public class PaperCrawler {
 
 		downloadQueue.putAStop();
 
-//		while (!downloadQueue.allThreadsStopped()) {
-//			try {
-//				Thread.sleep(100);
-//			} catch (InterruptedException ex) {
-//			}
-//		}
-//		;
-//
-//		try {
-//			OUT.close();
-//		} catch (IOException ex) {
-//			printException(ex);
-//		}
+		// while (!downloadQueue.allThreadsStopped()) {
+		// try {
+		// Thread.sleep(100);
+		// } catch (InterruptedException ex) {
+		// }
+		// }
+		// ;
+		//
+		// try {
+		// OUT.close();
+		// } catch (IOException ex) {
+		// printException(ex);
+		// }
 	}
 
 	// static void visitNode(NodeList list, String startURL, String currentURL,
@@ -163,16 +169,18 @@ public class PaperCrawler {
 			}
 			if (history.get(path.trim().toLowerCase()) == null) {
 				if (isPdfURL(path)) {
+					if(DEBUG_INFO)System.err.println(path + " added to download queue.");
 					downloadURL(path);
 				} else if (withinScope(startURL, getFilePath(path))
-						&& level < maxLevel) {
+						&& level < MAX_LEVEL) {
+					if(DEBUG_INFO)System.err.println(path + " added to crawl list.");
 					urlList.add(path);
 					urlLevels.add(new Integer(level + 1));
 					referringURLPath.add(path);
-					
-					if(INCLUDE_HTML_FILES) downloadURL(path);
+
+					if (INCLUDE_HTML_FILES)
+						downloadURL(path);
 				}
-				System.err.println(path + " added.");
 				history.put(path.trim().toLowerCase(), new Integer(level + 1));
 			}
 		}
@@ -205,10 +213,12 @@ public class PaperCrawler {
 	// }
 
 	String[] getLinks(String url) {
+		if(DEBUG_INFO)System.err.println("Analysing " + url + ".");
 		ArrayList<String> list = new ArrayList<String>();
 		String html = downloadHTML(url);
 
-		Pattern pattern = Pattern.compile("<[aA].+[Hh][Rr][Ee][Ff]=\"?(.+?)[\" >]");
+		Pattern pattern = Pattern
+				.compile("<[aA].+[Hh][Rr][Ee][Ff]=\"?(.+?)[\" >]");
 		Matcher matcher = pattern.matcher(html);
 		while (matcher.find()) {
 			list.add(matcher.group(1));
@@ -318,7 +328,7 @@ public class PaperCrawler {
 		// }
 
 		downloadQueue.addToQueue(urlAddress, currentSystemPath + fileName,
-				this.OUT);
+				this.WRITER);
 
 	}
 

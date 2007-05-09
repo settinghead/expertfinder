@@ -6,11 +6,11 @@ import java.util.regex.*;
 
 public class Tokenizer {
 
-	public static void tokenize(String input, OutputStream out) {
+	public static void tokenize(String input, Writer writer) {
 		try {
 			// Scanner sc = new Scanner(input);
 
-			OutputStreamWriter writer = new OutputStreamWriter(out);
+
 			Pattern p = Pattern.compile("[a-zA-Z\\-]*[^a-zA-Z\\-]*");
 			Pattern nonAlnum = Pattern.compile("[^a-zA-Z\\-]");
 			Matcher m = p.matcher(input);
