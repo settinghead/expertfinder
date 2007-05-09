@@ -1,4 +1,4 @@
-package org.expertfinder.crawler.conversion;
+package org.expertfinder.conversion;
 
 import java.io.*;
 import java.net.MalformedURLException;

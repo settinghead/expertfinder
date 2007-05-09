@@ -1,4 +1,5 @@
-package org.expertfinder.crawler.conversion;
+package org.expertfinder.conversion;
+
 import java.util.regex.*;
 
 public class HTML2Text {
