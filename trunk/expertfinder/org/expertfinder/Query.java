@@ -2,6 +2,9 @@ package org.expertfinder;
 
 import java.io.*;
 import org.expertfinder.crawler.conversion.*;
+import java.util.Scanner;
+import org.expertfinder.tokenization.*;
+import org.expertfinder.crawl.*;
 
 public class Query {
 
@@ -30,32 +33,44 @@ public class Query {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) throws Exception{
+	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 
 		storeParameters(args);
-		Reader reader = null;
-		Writer writer = new OutputStreamWriter(System.out); 
+		StringWriter sw = new StringWriter();
 		switch (INPUT_FORMAT) {
 		case WebURL:
-
+			// the url is a pdf file
+			if (SOURCE_NAME.endsWith(".pdf")) {
+				PDFParser.pdfToTokenizedText(SOURCE_NAME,
+						PDFParser.SourceType.WebAddress, sw);
+			} else {
+				Tokenizer.tokenize(FileDownload.downloadText(SOURCE_NAME,
+						1024 * 1024 * 5), sw);
+			}
 			break;
 		case PDFFile:
-			StringWriter sw = new StringWriter();
 			PDFParser.pdfToTokenizedText(SOURCE_NAME,
 					PDFParser.SourceType.LocalFile, sw);
-			sw.flush();
-			reader = new StringReader(sw.toString());
 			break;
 		case HTMLFile:
+			// TO DO!!!!!!!!!!!!!!!!!
 			break;
 		case ConsoleInput:
 		default:
+			Scanner sc = new Scanner(System.in);
+			StringBuffer sb = new StringBuffer();
+			while (sc.hasNextLine())
+				sb.append((sc.nextLine()));
+			Tokenizer.tokenize(sb.toString(), sw);
 			break;
 		}
+		Reader reader = new StringReader(sw.toString());
+		Writer writer = new OutputStreamWriter(System.out);
 		Controller.queryResult(reader, writer);
 		reader.close();
 		writer.close();
+		sw.close();
 	}
 
 	static void storeParameters(String[] args) {
