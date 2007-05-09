@@ -106,6 +106,8 @@ public class DownloadRunnableClass implements Runnable {
 		// FileDownload dl = new FileDownload();
 		// dl.download(url, location);
 		// System.out.println(url);
+		
+		//get slot for downloading from the server 
 		while (!getAddressPass(url))
 			;
 		

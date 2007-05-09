@@ -86,12 +86,12 @@ public class Controller {
 		String queryFile = PROFILE_PATH + "query/query.txt";
 		String queryProfileFile = PROFILE_PATH + "query/profile_query.txt";
 
-		ProfileBuilder.main(new String[] { queryFile, queryProfileFile });
-
 		FileWriter writer;
 		(writer = new FileWriter(new File(queryFile))).write(query);
 		writer.close();
 
+		
+		ProfileBuilder.main(new String[] { queryFile, queryProfileFile });
 		App.main(new String[] { mapFile, idfFile, queryProfileFile });
 
 	}
