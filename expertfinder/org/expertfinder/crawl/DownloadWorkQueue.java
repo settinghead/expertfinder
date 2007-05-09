@@ -1,8 +1,6 @@
 package org.expertfinder.crawl;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -31,7 +29,7 @@ public class DownloadWorkQueue {
 		return true;
 	}
 
-	public DownloadWorkQueue(int nThreads, OutputStream out) {
+	public DownloadWorkQueue(int nThreads, Writer writer) {
 		this.nThreads = nThreads;
 		queue = new LinkedList<Runnable>();
 		threads = new PoolWorker[nThreads];
@@ -49,10 +47,10 @@ public class DownloadWorkQueue {
 		}
 	}
 
-	public void addToQueue(String url, String location, OutputStream out) {
+	public void addToQueue(String url, String location, Writer writer) {
 		synchronized (queue) {
 			DownloadRunnableClass drc = new DownloadRunnableClass(url,
-					location, out);
+					location, writer);
 			queue.addLast(drc);
 			queue.notify();
 		}
