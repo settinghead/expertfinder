@@ -1,14 +1,3 @@
-./profiles/profile_Jin-yiCai.txt Jin-yi_Cai
-./profiles/profile_AdityaAkella.txt Aditya_Akella
-./profiles/profile_RemziH.Arpaci-Dusseau.txt Remzi_H._Arpaci-Dusseau
-./profiles/profile_MichaelC.Ferris.txt Michael_C._Ferris
-./profiles/profile_MichaelGleicher.txt Michael_Gleicher
-./profiles/profile_DeborahA.Joseph.txt Deborah_A._Joseph
-./profiles/profile_MironLivny.txt Miron_Livny
-./profiles/profile_JeffreyF.Naughton.txt Jeffrey_F._Naughton
-./profiles/profile_ThomasW.Reps.txt Thomas_W._Reps
-./profiles/profile_KaruSankaralingam.txt Karu_Sankaralingam
-./profiles/profile_MichaelM.Swift.txt Michael_M._Swift
-./profiles/profile_PaulBarford.txt Paul_Barford
-./profiles/profile_SHUCHICHAWLA.txt SHUCHI_CHAWLA
+./profiles/profile_DeborahJosephWisc.txt Deborah_Joseph_Wisc
 ./profiles/profile_MaryK.Vernon.txt Mary_K._Vernon
+./profiles/profile_SHUCHICHAWLA.txt SHUCHI_CHAWLA
