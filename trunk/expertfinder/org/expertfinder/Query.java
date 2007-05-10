@@ -55,6 +55,7 @@ public class Query {
 			break;
 		case HTMLFile:
 			// TO DO!!!!!!!!!!!!!!!!!
+			System.err.println("Implementation incomplete.");
 			break;
 		case ConsoleInput:
 		default:
