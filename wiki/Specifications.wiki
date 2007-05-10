@@ -1,5 +1,4 @@
 #labels Phase-Implementation,Featured,Specifications
-#module specification
-
 For the most recent specification document, see
+
 http://docs.google.com/Doc?id=dg85qr8z_136gvxqh 
