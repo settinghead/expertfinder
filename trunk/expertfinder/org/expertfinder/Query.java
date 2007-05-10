@@ -115,7 +115,7 @@ public class Query {
 
 	static void printUsage() {
 		System.out
-				.println("Usage: Query [-idfpath path] [[-webaddress url] | [-pdf filename] | [-html filename] | [-keywords]]");
+				.println("Usage: Query [-idfpath path] [[-webaddress url] | [-pdf filename] | [-keywords]]");
 	}
 
 }
