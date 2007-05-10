@@ -1,7 +1,7 @@
 package org.expertfinder;
 
 import java.io.*;
-import org.expertfinder.crawler.conversion.*;
+import org.expertfinder.crawl.conversion.*;
 import java.util.Scanner;
 import org.expertfinder.tokenization.*;
 import org.expertfinder.crawl.*;

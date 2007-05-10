@@ -4,10 +4,10 @@ import java.io.*;
 import java.util.Hashtable;
 import java.util.Scanner;
 
-import org.expertfinder.crawler.conversion.HTML2Text;
-import org.expertfinder.crawler.conversion.PDFParser;
+import org.expertfinder.crawl.conversion.HTML2Text;
+import org.expertfinder.crawl.conversion.PDFParser;
 import org.expertfinder.tokenization.Tokenizer;
-import org.expertfinder.crawler.conversion.*;
+import org.expertfinder.crawl.conversion.*;
 
 public class DownloadRunnableClass implements Runnable {
 
