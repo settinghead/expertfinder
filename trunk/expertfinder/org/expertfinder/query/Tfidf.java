@@ -32,7 +32,9 @@ public class Tfidf {
 				System.exit(0);
 			}
 			Doub idfObj = (Doub) idfTable.get(tokens[0]);
-			double idf = idfObj.value;
+			double idf = 0;
+			if (idfObj != null)
+				idf = idfObj.value;
 			double tf = Integer.parseInt(tokens[1]) / maxCount;
 			table.put(tokens[0], new Doub(tf * idf));
 		}
