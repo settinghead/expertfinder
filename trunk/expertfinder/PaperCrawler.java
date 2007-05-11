@@ -1,5 +1,4 @@
 
-
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
@@ -19,12 +18,14 @@ public class PaperCrawler {
 
 	public boolean INCLUDE_HTML_FILES = true;
 
+	public boolean INCLUDE_PDF_FILES = true;
+
 	public int MAX_LEVEL = 3;
 
 	public int NUMBER_OF_THREADS = 10;
 
 	public boolean DEBUG_INFO = true;
-	
+
 	public Writer getWriter() {
 		return WRITER;
 	}
@@ -168,12 +169,14 @@ public class PaperCrawler {
 				printException(ex);
 			}
 			if (history.get(path.trim().toLowerCase()) == null) {
-				if (isPdfURL(path)) {
-					if(DEBUG_INFO)System.err.println(path + " added to download queue.");
+				if (INCLUDE_PDF_FILES && isPdfURL(path)) {
+					if (DEBUG_INFO)
+						System.err.println(path + " added to download queue.");
 					downloadURL(path);
 				} else if (withinScope(startURL, getFilePath(path))
 						&& level < MAX_LEVEL) {
-					if(DEBUG_INFO)System.err.println(path + " added to crawl list.");
+					if (DEBUG_INFO)
+						System.err.println(path + " added to crawl list.");
 					urlList.add(path);
 					urlLevels.add(new Integer(level + 1));
 					referringURLPath.add(path);
@@ -213,7 +216,8 @@ public class PaperCrawler {
 	// }
 
 	String[] getLinks(String url) {
-		if(DEBUG_INFO)System.err.println("Analysing " + url + ".");
+		if (DEBUG_INFO)
+			System.err.println("Analysing " + url + ".");
 		ArrayList<String> list = new ArrayList<String>();
 		String html = downloadHTML(url);
 
