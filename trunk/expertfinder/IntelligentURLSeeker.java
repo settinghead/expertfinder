@@ -40,13 +40,16 @@ public class IntelligentURLSeeker {
 					crawler.INCLUDE_PDF_FILES = true;
 					crawler.MAX_LEVEL = 0;
 					crawler.WRITER = new FileWriter("./tmp/tmp_" + i + "-" + j
-							+ "_profile.txt", false);
+							+ "_raw.txt", false);
 					crawler.crawl(urls[i][j]);
 					crawler.WRITER.flush();
 					crawler.WRITER.close();
+					ProfileBuilder.main(new String[] {
+							"./tmp/tmp_" + i + "-" + j + "_raw.txt",
+							"./tmp/tmp_" + i + "-" + j + "_profile.txt" });
 					// write to collective profile
 					FileReader reader = new FileReader("./tmp/tmp_" + i + "-"
-							+ j + "_profile.txt");
+							+ j + "_raw.txt");
 					int c = 0;
 					while ((c = reader.read()) > 0)
 						writer.write(c);
@@ -62,7 +65,7 @@ public class IntelligentURLSeeker {
 				"./tmp/tmp_profile_intelligentURL.txt" });
 
 		FileWriter mapWriter = new FileWriter("./tmp/tmp_map.txt");
-		mapWriter.write("huge ./tmp/tmp_profile_intelligentURL.txt");
+		mapWriter.write("./tmp/tmp_profile_intelligentURL.txt huge");
 		mapWriter.flush();
 		mapWriter.close();
 
@@ -78,11 +81,9 @@ public class IntelligentURLSeeker {
 			int maxJ = -1;
 			for (int j = 0; j < urls[i].length; j++) {
 				if (urls[i][j] != null) {
-					Sim[] sims = App.query(new String[] {
-							"./tmp/tmp_map.txt",
+					Sim[] sims = App.query(new String[] { "./tmp/tmp_map.txt",
 							"./tmp/tmp_idf_intelligentURL.txt",
-							j + " " + "./tmp/tmp_" + i + "-" + j
-									+ "_profile.txt" });
+							"./tmp/tmp_" + i + "-" + j + "_profile.txt" });
 					double similarity = 0;
 					if (sims.length > 0)
 						similarity = sims[0].auth;
