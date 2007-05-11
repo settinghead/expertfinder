@@ -1,0 +1,37 @@
+Aditya Akella  	 
+Andrea Arpaci-Dusseau 	
+Remzi Arpaci-Dusseau
+Eric Bach
+Suman Banerjee
+Paul Barford
+Jin-Yi Cai
+Shuchi Chawla
+David DeWitt
+AnHai Doan
+Charles Dyer
+Cristian Estan
+Michael Ferris
+Charles Fischer
+Michael Gleicher
+Mark Hill
+Susan Horwitz
+Somesh Jha
+Deborah Joseph
+Ben Liblit
+Miron Livny
+Dieter van Melkebeek
+Robert Meyer
+Bart Miller
+Jeffery Naughton
+Raghu Ramakrishnan
+Thomas Reps
+Amos Ron
+Karthikeyan Sankaralingam
+Jude Shavlik
+Gurindar Sohi
+Marvin Solomon
+Michael M. Swift
+Mary Vernon
+David Wood
+Stephen J. Wright
+Xiaojin (Jerry) Zhu

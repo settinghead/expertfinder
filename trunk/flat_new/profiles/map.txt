@@ -1,0 +1,17 @@
+profiles/profile_AdityaAkella.txt Aditya_Akella
+profiles/profile_AmosRon.txt Amos_Ron
+profiles/profile_AndreaArpaci-Dusseau.txt Andrea_Dusseau 
+profiles/profile_AnhaiDoan.txt Anhai_Doan
+profiles/profile_BenLiblit.txt Ben_Liblit
+profiles/profile_CharlesDyer.txt Charles_Dyer
+profiles/profile_CristianEstan.txt Christian_Estan
+profiles/profile_DavidDeWitt.txt David_DeWitt
+profiles/profile_DietervanMelkebeek.txt Dieter_Van_Melkebeek
+profiles/profile_JerryZhu.txt Jerry_Zhu
+profiles/profile_Jin-YiCai.txt Jin_Yi_Cai
+profiles/profile_PaulBarford.txt Paul_Barford
+profiles/profile_RaghuRamakrishnan.txt Raghu_Ramakrishnan
+profiles/profile_RemziArpaci-Dusseau.txt Remzi_Dusseau
+profiles/profile_RobertR.Meyer.txt Robert_Meyer
+profiles/profile_SomeshJha.txt Somesh_Jha
+profiles/profile_SusanB.Horwitz.txt Susan_Horwitz
