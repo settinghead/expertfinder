@@ -18,7 +18,6 @@
 	<classpathentry kind="lib" path="pdfbox/bcprov-jdk14-132.jar"/>
 	<classpathentry kind="lib" path="pdfbox/checkstyle-all-4.2.jar"/>
 	<classpathentry kind="lib" path="pdfbox/FontBox-0.1.0-dev.jar"/>
-	<classpathentry kind="lib" path="pdfbox/junit.jar"/>
 	<classpathentry kind="lib" path="pdfbox/lucene-core-2.0.0.jar"/>
 	<classpathentry kind="lib" path="pdfbox/lucene-demos-2.0.0.jar"/>
 	<classpathentry kind="lib" path="pdfbox/PDFBox-0.7.3.jar"/>
