@@ -1,0 +1,3 @@
+java Query -idfpath ./profiles/query/idf.txt < profiles/query/query3
+java Query -idfpath ./profiles/query/idf.txt -pdf ../../../Desktop/miller.pdf
+java Query -idfpath ./profiles/query/idf.txt -pdf ../../../Desktop/humanSSL.pdf
