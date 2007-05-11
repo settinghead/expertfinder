@@ -1,5 +1,4 @@
 
-
 import java.util.*;
 import java.io.*;
 
@@ -13,17 +12,24 @@ public class App {
 	private static int numResearchers;
 
 	static Writer WRITER = new OutputStreamWriter(System.out);
-	
-	{
-		
-	}
-	
-	public static void setWriter(Writer writer)
-	{
+
+	public static void setWriter(Writer writer) {
 		WRITER = writer;
 	}
-	
+
 	public static void main(String[] args) throws Exception {
+		query(args);
+		if (args.length == 3)
+			display(numResearchers);
+		else {
+			if (args[3].equals("num"))
+				display(Integer.parseInt(args[4]));
+			else
+				display1(Double.parseDouble(args[4]));
+		}
+	}
+
+	public static Sim[] query(String[] args) throws Exception {
 		mapTable = new Hashtable();
 		idfTable = new Hashtable();
 
@@ -47,15 +53,7 @@ public class App {
 			numResearchers = count;
 		// sort
 		Heapsort.sort(simValues, numResearchers);
-
-		if (args.length == 3)
-			display(numResearchers);
-		else {
-			if (args[3].equals("num"))
-				display(Integer.parseInt(args[4]));
-			else
-				display1(Double.parseDouble(args[4]));
-		}
+		return simValues;
 	}
 
 	public static void mapNameDir(String fileName) throws Exception {

@@ -9,14 +9,14 @@ public class Controller {
 
 	static Writer QUERY_WRITER = new OutputStreamWriter(System.out);
 
-	public static void main(String[] args) throws Exception {
-		// build();
-		// buildIdf();
-		query();
-	}
+//	public static void main(String[] args) throws Exception {
+//		// build();
+//		// buildIdf();
+//		query();
+//	}
 
 	static void build() {
-		String[] names = new String[] { 
+		String[] names = new String[] {
 //				"Dieter van Melkebeek",
 //				"Robert R. Meyer", "Jerry Zhu", "Anhai Doan", "Charles Dyer",
 //				"David J. DeWitt", "Barton P. Miller", "Amos Ron",
@@ -26,14 +26,14 @@ public class Controller {
 //				// " Jude Shavlik",
 //				"Raghu Ramakrishnan", "Cristian Estan", "Susan B. Horwitz",
 				"Somesh Jha" };
-		buildProfiles(names);
+		//buildProfiles(names);
 	}
 
 	static void query() throws Exception {
 		queryResult("operating system kernel", QUERY_WRITER);
 	}
 
-	public static void buildProfiles(String[] names) {
+	public static void buildProfiles(String[] names, String[] addresses) {
 		(new File(PROFILE_PATH)).mkdir();
 		try {
 			FileWriter mapWriter = new FileWriter(new File(PROFILE_PATH
@@ -52,10 +52,8 @@ public class Controller {
 							false);
 					(crawler).setWriter(writer);
 
-					String[] addresses = NameToURL.getAddresses(names[i], 1,
-							null);
 					if (addresses.length > 0) {
-						String address = addresses[0];
+						String address = addresses[i];
 						crawler.crawl(address);
 						ProfileBuilder.main(new String[] { rawFilePath,
 								profileFilePath });
