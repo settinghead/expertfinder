@@ -59,6 +59,11 @@ public class NamesToProfiles {
 						PROFILE_PATH = args[++i].endsWith("/") ? args[i]
 								: args[i] + "/"; // append forward slash if
 					// necessary
+					else if (args[i].trim().toLowerCase().equals(
+							INTELLIGENT_URL_SWITCH)) {
+						if (args[++i].trim().toLowerCase().equals("off"))
+							INTELLIGENT_URL = false;
+					}
 					break;
 				default:
 					break;
