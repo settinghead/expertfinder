@@ -30,6 +30,7 @@ public class NamesToProfiles {
 		while (sc.hasNextLine())
 			names.add(sc.nextLine());
 		String[] namesArray = (String[]) names.toArray(new String[0]);
+		sc.close();
 		// retrieve web addresses
 		String[] addresses;
 
