@@ -1,4 +1,3 @@
-
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
@@ -84,9 +83,19 @@ public class PaperCrawler {
 				// check if the address has been visited
 				// visitNode(getAllLinkNodes(urlList.remove(0)), startURL,
 				// startURL, urlLevels.remove(0).intValue());
-				visitLink(getLinks(urlList.remove(0)), startURL,
-						referringURLPath.remove(0), urlLevels.remove(0)
-								.intValue());
+				String path = urlList.remove(0);
+				int level = urlLevels.remove(0).intValue();
+				if (level == 0) {
+					if (INCLUDE_PDF_FILES && isPdfURL(path)) {
+						if (DEBUG_INFO)
+							System.err.println(path
+									+ " added to download queue.");
+						downloadURL(path);
+					} else if (INCLUDE_HTML_FILES)
+						downloadURL(path);
+				}
+				visitLink(getLinks(path), startURL, referringURLPath.remove(0),
+						level);
 				debugPrintHistory();
 			}
 		} catch (Exception ex) {
@@ -95,13 +104,13 @@ public class PaperCrawler {
 
 		downloadQueue.putAStop();
 
-		// while (!downloadQueue.allThreadsStopped()) {
-		// try {
-		// Thread.sleep(100);
-		// } catch (InterruptedException ex) {
-		// }
-		// }
-		// ;
+		 while (!downloadQueue.allThreadsStopped()) {
+		 try {
+		 Thread.sleep(100);
+		 } catch (InterruptedException ex) {
+		 }
+		 }
+		 ;
 		//
 		// try {
 		// OUT.close();
@@ -153,6 +162,7 @@ public class PaperCrawler {
 
 	void visitLink(String[] list, String startURL, String referringURL,
 			int level) {
+
 		for (int i = 0; i < list.length; i++) {
 
 			String path = "";
